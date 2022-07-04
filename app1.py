@@ -151,6 +151,9 @@ def remaining_time():
         try:
             order_state = doc.to_dict()['data'][4]['order_state']
             if order_state == 'Completed':
+                do = client.collection(u'stores').document(storeID).collection('orders').document(doc.id)
+                # Updating key
+                do.update({u'orderPriority': 1000})
                 continue
 
         except:
@@ -181,6 +184,9 @@ def remaining_time():
 
             print(f'Total order production time : {production_time}')
             if count == len(doc.to_dict()['data'][0]['order']['items']):
+                do = client.collection(u'stores').document(storeID).collection('orders').document(doc.id)
+                # Updating key
+                do.update({u'orderPriority': 1000})
                 continue
 
             # Gather all data into two dimensional list
@@ -208,7 +214,6 @@ def remaining_time():
     for documents in document:
         for i in range(len(re)):
             do = client.collection(u'stores').document(storeID).collection('orders').document(re[i][0])
-            
             # Updating key
             do.update({u'orderPriority': re[i][1]})
 
