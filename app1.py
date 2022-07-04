@@ -147,7 +147,9 @@ def remaining_time():
         orderType = doc.to_dict()['data'][0]['order']['details']['order_type']
         if orderType == 'online' or orderType == 'delivery':
             continue
-        
+        do = client.collection(u'stores').document(storeID).collection('orders').document(doc.id)
+        # Updating key
+        do.update({u'orderPriority': 0})
         try:
             order_state = doc.to_dict()['data'][4]['order_state']
             if order_state == 'Completed':
